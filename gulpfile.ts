@@ -1,7 +1,6 @@
 import gulp from 'gulp';
 
-var postcss = require('gulp-postcss'),
-    sass = require('gulp-sass')(require('sass'));
+var postcss = require('gulp-postcss');
 
 var paths = {
     styles: {
