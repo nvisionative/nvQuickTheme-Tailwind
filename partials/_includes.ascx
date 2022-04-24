@@ -2,7 +2,7 @@
 <dnn:DnnCssExclude runat="server" Name="dnndefault" /> 
 
 <dnn:DnnCssInclude runat="server" FilePath="dist/css/all.min.css" Priority="100" PathNameAlias="SkinPath" />
-<dnn:DnnCssInclude runat="server" FilePath="dist/css/styles.css" Priority="110" PathNameAlias="SkinPath" />
+<dnn:DnnCssInclude runat="server" FilePath="dist/css/styles.min.css" Priority="110" PathNameAlias="SkinPath" />
 
 <dnn:DnnJsInclude runat="server" FilePath="dist/js/jquery.slimmenu.min.js" ForceProvider="DnnFormBottomProvider" Priority="100" PathNameAlias="SkinPath" />
 <dnn:DnnJsInclude runat="server" FilePath="dist/js/bootstrap.bundle.min.js" ForceProvider="DnnFormBottomProvider" Priority="110" PathNameAlias="SkinPath" />
