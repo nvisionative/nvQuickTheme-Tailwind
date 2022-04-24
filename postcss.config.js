@@ -2,8 +2,13 @@ const cssnano = require('cssnano');
 
 module.exports = {
     plugins: {
+        'postcss-import': {},
         tailwindcss: {},
         autoprefixer: {},
-        cssnano(){preset: 'default'}
+        cssnano() {
+            return {
+                preset: 'default',
+            };
+        }
     }
 }
