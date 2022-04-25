@@ -1,0 +1,10 @@
+{
+    "fonts": {
+        "src": "./src/fonts/*",
+        "dest": "./dist/fonts/"
+    },
+    "styles": {
+        "src": "./src/css/styles.css",
+        "dest": "./dist/css/"
+    }
+}

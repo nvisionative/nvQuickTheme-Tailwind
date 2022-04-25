@@ -1,19 +1,9 @@
 import gulp from 'gulp';
 
 var notify          = require('gulp-notify'),
+    paths           = require('./project-paths.json'),
     postcss         = require('gulp-postcss'),
     rename          = require('gulp-rename');
-
-var paths = {
-    fonts: {
-        src: './src/fonts/*',
-        dest: './dist/fonts/'
-    },
-    styles: {
-        src: './src/css/styles.css',
-        dest: './dist/css/'
-    }
-};
 
 /*------------------------------------------------------*/
 /* INIT TASKS ------------------------------------------*/
