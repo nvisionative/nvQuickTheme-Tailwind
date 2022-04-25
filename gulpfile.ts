@@ -1,6 +1,6 @@
-import gulp from 'gulp';
+import gulp, { src } from 'gulp';
 
-var notify          = require('gulp-notify'),
+var log             = require('fancy-log'),
     paths           = require('./project-paths.json'),
     postcss         = require('gulp-postcss'),
     rename          = require('gulp-rename');
@@ -10,9 +10,13 @@ var notify          = require('gulp-notify'),
 /*------------------------------------------------------*/
 // Copy fonts from src/fonts to dist/fonts
 function fontsInit() {
+    var fileCount = 0;
     return gulp.src(paths.fonts.src)
         .pipe(gulp.dest(paths.fonts.dest))
-        .pipe(notify({message: '<%= file.relative %> distributed!', title : 'fontsInit'}));
+        .on('data', function() { fileCount += 1; })
+        .on('end', function() {
+          log(fileCount, 'font file(s) distributed!');
+        });
 }
 /*------------------------------------------------------*/
 /* END INIT TASKS --------------------------------------*/
@@ -24,11 +28,15 @@ function fontsInit() {
 /*------------------------------------------------------*/
 // Compile custom CSS and copy to dist/css
 function styles() {
+    var fileCount = 0;
     return gulp.src(paths.styles.src, { sourcemaps: true })
         .pipe(postcss())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(paths.styles.dest), { sourcemaps: '.' })
-        .pipe(notify({message: '<%= file.relative %> compiled and distributed!', title: 'styles'}));
+        .on('data', function() { fileCount += 1; })
+        .on('end', function() {
+          log(fileCount, 'file(s) compiled and distributed!');
+        });
 };
 /*------------------------------------------------------*/
 /* END STYLES TASKS ------------------------------------*/

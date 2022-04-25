@@ -1,10 +1,10 @@
 module.exports = {
   mode: "jit",
-  purge: [
+  content: [
     '**/*.{ascx,xml,cshtml,txt,html,htm}',
     './src/js/**/*.js'
   ],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'media',
   theme: {
     fontFamily: {
       'sans': [
