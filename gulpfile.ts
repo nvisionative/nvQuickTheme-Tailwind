@@ -51,6 +51,7 @@ var build = gulp.series(init, styles);
 /*------------------------------------------------------*/
 /* EXPORT TASKS ----------------------------------------*/
 /*------------------------------------------------------*/
+exports.fontsInit = fontsInit;
 exports.styles = styles;
 exports.init = init;
 exports.build = build;
