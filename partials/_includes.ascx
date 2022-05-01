@@ -5,7 +5,6 @@
 <dnn:DnnCssInclude runat="server" FilePath="dist/css/styles.min.css" Priority="110" PathNameAlias="SkinPath" />
 
 <dnn:DnnJsInclude runat="server" FilePath="dist/js/jquery.slimmenu.min.js" ForceProvider="DnnFormBottomProvider" Priority="100" PathNameAlias="SkinPath" />
-<dnn:DnnJsInclude runat="server" FilePath="dist/js/bootstrap.bundle.min.js" ForceProvider="DnnFormBottomProvider" Priority="110" PathNameAlias="SkinPath" />
 <dnn:DnnJsInclude runat="server" FilePath="dist/js/custom.min.js" ForceProvider="DnnFormBottomProvider" Priority="120" PathNameAlias="SkinPath" />
 <dnn:DnnJsInclude runat="server" FilePath="dist/js/modernizr-custom.min.js" ForceProvider="DnnFormBottomProvider" Priority="130" PathNameAlias="SkinPath" />
 
@@ -27,6 +26,7 @@
         var types = new Dictionary<string, string>();
         types.Add("woff2", "font/woff2");
         types.Add("woff", "font/woff");
+        types.Add("ttf", "font/ttf");
 
         var defaultPage = (CDefault)this.Page;
 
@@ -34,6 +34,14 @@
         {
             foreach (var font in fonts)
             {
+                if (font.Contains("dist/webfonts") && type.Key == "woff")
+                {
+                    continue;
+                }
+                if (font.Contains("dist/fonts") && type.Key == "ttf")
+                {
+                    continue;
+                }
                 var fontLink = new HtmlLink();
                 fontLink.Attributes.Add("rel", "preload");
                 fontLink.Attributes.Add("as", "font");

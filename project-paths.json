@@ -3,6 +3,14 @@
         "src": "./src/fonts/*",
         "dest": "./dist/fonts/"
     },
+    "faFonts": {
+        "src": "./node_modules/@fortawesome/fontawesome-free/webfonts/*",
+        "dest": "./dist/webfonts/"
+    },
+    "faCss": {
+        "src": "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+        "dest": "./dist/css/"
+    },
     "styles": {
         "src": "./src/css/styles.css",
         "dest": "./dist/css/"
