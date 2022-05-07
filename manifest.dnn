@@ -1,8 +1,8 @@
 <dotnetnuke type="Package" version="9.0">
   <packages>
-    <package name="nvisionative.nvQuickTheme.Tailwind" type="Skin" version="1.0.0">
-      <friendlyName>nvQuickTheme (Tailwind)</friendlyName>
-      <description>A DNN Theme Dev Framework Using Tailwind</description>
+    <package name="nvisionative.nvQuickTheme-Tailwind" type="Skin" version="1.0.0">
+      <friendlyName>nvQuickTheme-Tailwind</friendlyName>
+      <description>A DNN Theme Dev Framework based on Tailwind CSS</description>
       <iconFile>MyIcon.png</iconFile>
       <owner>
         <name>David Poindexter</name>
