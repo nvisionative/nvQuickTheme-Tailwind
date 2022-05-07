@@ -4,6 +4,7 @@ var log             = require('fancy-log'),
     paths           = require('./project-paths.json'),
     postcss         = require('gulp-postcss'),
     rename          = require('gulp-rename'),
+    replace         = require('gulp-replace'),
     details         = require('./project-details.json'),
     project         = details.project,
     version         = details.version,
@@ -74,13 +75,42 @@ function styles() {
 
 
 /*------------------------------------------------------*/
+/* DNN TASKS -------------------------------------------*/
+/*------------------------------------------------------*/
+// Update manifest.dnn
+function manifest() {
+  var fileCount = 0;
+  return gulp.src(paths.manifest.src)
+    .pipe(replace(/\<package name\=\"(.*?)(?=\")/, '<package name="' + company + '.' + project))
+    .pipe(replace(/type\=\"Skin\" version\=\"(.*?)(?=\")/, 'type="Skin" version="' + version))
+    .pipe(replace(/\<friendlyName\>(.*?)(?=\<)/, '<friendlyName>' + project))
+    .pipe(replace(/\<description\>(.*?)(?=\<)/, '<description>' + description))
+    .pipe(replace(/\<name\>(.*?)(?=\<)/, '<name>' + author))
+    .pipe(replace(/\<organization\>(.*?)(?=\<)/, '<organization>' + company))
+    .pipe(replace(/\<url\>(.*?)(?=\<)/, '<url>' + url))
+    .pipe(replace(/\<email\>(.*?)(?=\<)/, '<email>' + email))
+    .pipe(replace(/\<skinName\>(.*?)(?=\<)/, '<skinName>' + project))
+    .pipe(replace(/(\\Skins\\)(.*?)(?=\\)/g, '\\Skins\\' + project))
+    .pipe(replace(/(\\Containers\\)(.*?)(?=\\)/g, '\\Containers\\' + project))
+    .pipe(gulp.dest(paths.manifest.dest))
+    .on('data', function() { fileCount += 1; })
+    .on('end', function() {
+      log(fileCount, 'manifest file(s) updated and distributed!');
+    });
+}
+/*------------------------------------------------------*/
+/* END DNN TASKS ---------------------------------------*/
+/*------------------------------------------------------*/
+
+
+/*------------------------------------------------------*/
 /* DEV TASKS -------------------------------------------*/
 /*------------------------------------------------------*/
 // gulp init
 var init = gulp.series(fontsInit, faFontsInit, faCssInit);
 
 // gulp build
-var build = gulp.series(init, styles);
+var build = gulp.series(init, styles, manifest);
 /*------------------------------------------------------*/
 /* END DEV TASKS ---------------------------------------*/
 /*------------------------------------------------------*/
@@ -93,6 +123,7 @@ exports.fontsInit = fontsInit;
 exports.faFontsInit = faFontsInit;
 exports.faCssInit = faCssInit;
 exports.styles = styles;
+exports.manifest = manifest;
 exports.init = init;
 exports.build = build;
 

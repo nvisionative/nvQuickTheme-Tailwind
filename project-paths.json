@@ -14,5 +14,9 @@
     "styles": {
         "src": "./src/css/styles.css",
         "dest": "./dist/css/"
+    },
+    "manifest": {
+        "src": "./manifest.dnn",
+        "dest": "./"
     }
 }
