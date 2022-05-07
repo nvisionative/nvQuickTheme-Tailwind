@@ -3,7 +3,15 @@ import gulp, { src } from 'gulp';
 var log             = require('fancy-log'),
     paths           = require('./project-paths.json'),
     postcss         = require('gulp-postcss'),
-    rename          = require('gulp-rename');
+    rename          = require('gulp-rename'),
+    details         = require('./project-details.json'),
+    project         = details.project,
+    version         = details.version,
+    author          = details.author,
+    company         = details.company,
+    url             = details.url,
+    email           = details.email,
+    description     = details.description;
 
 /*------------------------------------------------------*/
 /* INIT TASKS ------------------------------------------*/

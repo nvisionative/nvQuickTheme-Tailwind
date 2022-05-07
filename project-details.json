@@ -1,0 +1,9 @@
+{
+	"project": "nvQuickTheme-Tailwind",
+	"version": "1.0.0",
+	"author": "David Poindexter",
+	"company": "nvisionative",
+	"url": "www.nvquicktheme.com",
+    "email": "support@nvisionative.com",
+    "description": "A DNN Theme Dev Framework based on Tailwind CSS"
+}
