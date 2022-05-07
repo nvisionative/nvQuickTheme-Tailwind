@@ -2,7 +2,7 @@ module.exports = {
   mode: "jit",
   content: [
     '**/*.{ascx,xml,cshtml,txt,html,htm}',
-    './src/js/**/*.js'
+    './src/scripts/**/*.js'
   ],
   darkMode: 'media',
   theme: {

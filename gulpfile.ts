@@ -1,10 +1,12 @@
 import gulp, { src } from 'gulp';
 
-var log             = require('fancy-log'),
+var jshint          = require('gulp-jshint'),
+    log             = require('fancy-log'),
     paths           = require('./project-paths.json'),
     postcss         = require('gulp-postcss'),
     rename          = require('gulp-rename'),
     replace         = require('gulp-replace'),
+    uglify          = require('gulp-uglify'),
     details         = require('./project-details.json'),
     project         = details.project,
     version         = details.version,
@@ -75,6 +77,29 @@ function styles() {
 
 
 /*------------------------------------------------------*/
+/* SCRIPTS TASKS ---------------------------------------*/
+/*------------------------------------------------------*/
+// Compile custom JS and copy to dist/js
+function scripts() {
+  var fileCount = 0;
+  return gulp.src(paths.scripts.src, { sourcemaps: true })
+    .pipe(jshint())
+    .pipe(uglify())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest(paths.scripts.dest, { sourcemaps: '.' }))
+    .pipe(jshint.reporter('default'))
+    .pipe(jshint.reporter('fail'))
+    .on('data', function() { fileCount += 1; })
+    .on('end', function() {
+      log(fileCount, 'file(s) minified and distributed!');
+    });
+}
+/*------------------------------------------------------*/
+/* END SCRIPTS TASKS -----------------------------------*/
+/*------------------------------------------------------*/
+
+
+/*------------------------------------------------------*/
 /* DNN TASKS -------------------------------------------*/
 /*------------------------------------------------------*/
 // Update manifest.dnn
@@ -110,7 +135,7 @@ function manifest() {
 var init = gulp.series(fontsInit, faFontsInit, faCssInit);
 
 // gulp build
-var build = gulp.series(init, styles, manifest);
+var build = gulp.series(init, styles, scripts, manifest);
 /*------------------------------------------------------*/
 /* END DEV TASKS ---------------------------------------*/
 /*------------------------------------------------------*/
@@ -123,6 +148,7 @@ exports.fontsInit = fontsInit;
 exports.faFontsInit = faFontsInit;
 exports.faCssInit = faCssInit;
 exports.styles = styles;
+exports.scripts = scripts;
 exports.manifest = manifest;
 exports.init = init;
 exports.build = build;

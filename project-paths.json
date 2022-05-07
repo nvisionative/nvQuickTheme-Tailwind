@@ -9,11 +9,15 @@
     },
     "faCss": {
         "src": "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-        "dest": "./dist/css/"
+        "dest": "./dist/styles/"
     },
     "styles": {
-        "src": "./src/css/styles.css",
-        "dest": "./dist/css/"
+        "src": "./src/styles/styles.css",
+        "dest": "./dist/styles/"
+    },
+    "scripts": {
+        "src": "./src/scripts/*.js",
+        "dest": "./dist/scripts/"
     },
     "manifest": {
         "src": "./manifest.dnn",
