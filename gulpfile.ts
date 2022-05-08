@@ -1,12 +1,14 @@
 import gulp, { src } from 'gulp';
 
-var jshint          = require('gulp-jshint'),
+var clean           = require('gulp-clean'),
+    jshint          = require('gulp-jshint'),
     log             = require('fancy-log'),
     paths           = require('./project-paths.json'),
     postcss         = require('gulp-postcss'),
     rename          = require('gulp-rename'),
     replace         = require('gulp-replace'),
     uglify          = require('gulp-uglify'),
+    zip             = require('gulp-zip'),
     details         = require('./project-details.json'),
     project         = details.project,
     version         = details.version,
@@ -15,6 +17,18 @@ var jshint          = require('gulp-jshint'),
     url             = details.url,
     email           = details.email,
     description     = details.description;
+
+var dynamicPaths = {
+  "containers": {
+    "src": "./containers/*",
+    "dest": "../../Containers/" + project + "/"
+  },
+  "zippackage": {
+    "src": ["./temp/*.zip", "*.{dnn,png,jpg,txt}", "LICENSE"],
+    "zipfile": project + "\_" + version + "\_install.zip",
+    "dest": "./build/"
+  },
+};
 
 /*------------------------------------------------------*/
 /* INIT TASKS ------------------------------------------*/
@@ -102,6 +116,17 @@ function scripts() {
 /*------------------------------------------------------*/
 /* DNN TASKS -------------------------------------------*/
 /*------------------------------------------------------*/
+// Copy containers to proper DNN theme containers folder
+function containers() {
+  var fileCount = 0;
+  return gulp.src(dynamicPaths.containers.src)
+    .pipe(gulp.dest(dynamicPaths.containers.dest))
+    .on('data', function() { fileCount += 1; })
+    .on('end', function() {
+      log(fileCount, 'container file(s) distributed!');
+    });
+}
+
 // Update manifest.dnn
 function manifest() {
   var fileCount = 0;
@@ -129,13 +154,93 @@ function manifest() {
 
 
 /*------------------------------------------------------*/
+/* MAINTENANCE TASKS -----------------------------------*/
+/*------------------------------------------------------*/
+// Clean up dist folder
+function cleandist() {
+  return gulp.src(paths.cleandist.src, { allowEmpty: true })
+    .pipe(clean())
+    .on('end', function() {
+      log('dist folder cleaned up!');
+    });
+}
+/*------------------------------------------------------*/
+/* END MAINTENANCE TASKS -------------------------------*/
+/*------------------------------------------------------*/
+
+
+/*------------------------------------------------------*/
+/* PACKAGING TASKS -------------------------------------*/
+/*------------------------------------------------------*/
+// ZIP contents of dist folder
+function zipdist() {
+  return gulp.src(paths.zipdist.src)
+    .pipe(zip(paths.zipdist.zipfile))
+    .pipe(gulp.dest(paths.zipdist.dest))
+    .on('end', function() {
+      log('dist folder zipped and temporarily stored!');
+    });
+}
+
+// ZIP contents of containers folder
+function zipcontainers() {
+  return gulp.src(paths.zipcontainers.src)
+    .pipe(zip(paths.zipcontainers.zipfile))
+    .pipe(gulp.dest(paths.zipcontainers.dest))
+    .on('end', function() {
+      log('containers folder zipped and temporarily stored!');
+    });
+}
+
+// ZIP everything else
+function zipelse() {
+  return gulp.src(paths.zipelse.src, {base: '.'})
+    .pipe(gulp.dest(paths.zipelse.dest))
+    .pipe(replace('dist/', ''))
+    .pipe(zip(paths.zipelse.zipfile))
+    .pipe(gulp.dest(paths.zipelse.dest))
+    .on('end', function() {
+      log('menus/partials/layouts/koi.json zipped and temporarily stored!');
+    });
+}
+
+// git ziptemp
+var ziptemp = gulp.series(zipdist, zipcontainers, zipelse);
+
+// Assemble files into DNN theme install package
+function zippackage() { 
+  return gulp.src(dynamicPaths.zippackage.src)
+    .pipe(zip(dynamicPaths.zippackage.zipfile))
+    .pipe(gulp.dest(dynamicPaths.zippackage.dest))
+    .on('end', function() {
+      log('theme install package created!');
+    });
+}
+
+// Clean temp folder
+function cleantemp() {
+  return gulp.src(paths.cleantemp.src)
+    .pipe(clean())
+    .on('end', function() {
+      log('temp folder cleaned up!');
+    });
+}
+/*------------------------------------------------------*/
+/* END PACKAGING TASKS ---------------------------------*/
+/*------------------------------------------------------*/
+
+
+/*------------------------------------------------------*/
 /* DEV TASKS -------------------------------------------*/
 /*------------------------------------------------------*/
 // gulp init
 var init = gulp.series(fontsInit, faFontsInit, faCssInit);
 
 // gulp build
-var build = gulp.series(init, styles, scripts, manifest);
+var build = gulp.series(cleandist, init, styles, scripts, containers, manifest);
+
+// gulp packageTheme
+var packageTheme = gulp.series(build, ziptemp, zippackage, cleantemp);
 /*------------------------------------------------------*/
 /* END DEV TASKS ---------------------------------------*/
 /*------------------------------------------------------*/
@@ -149,9 +254,18 @@ exports.faFontsInit = faFontsInit;
 exports.faCssInit = faCssInit;
 exports.styles = styles;
 exports.scripts = scripts;
+exports.containers = containers;
 exports.manifest = manifest;
+exports.cleandist = cleandist;
+exports.zipdist = zipdist;
+exports.zipcontainers = zipcontainers;
+exports.zipelse = zipelse;
+exports.ziptemp = ziptemp;
+exports.zippackage = zippackage;
+exports.cleantemp = cleantemp;
 exports.init = init;
 exports.build = build;
+exports.packageTheme = packageTheme;
 
 // Define default task that can be called by just running `gulp` from cli
 exports.default = build;

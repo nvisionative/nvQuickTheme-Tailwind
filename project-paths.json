@@ -22,5 +22,26 @@
     "manifest": {
         "src": "./manifest.dnn",
         "dest": "./"
+    },
+    "zipdist": {
+        "src": "./dist/**/*",
+        "zipfile": "dist.zip",
+        "dest": "./temp/"
+    },
+    "zipcontainers": {
+        "src": "./containers/**/*",
+        "zipfile": "cont.zip",
+        "dest": "./temp/"
+    },
+    "zipelse": {
+        "src": ["./menus/**/*", "./partials/*", "*.{ascx,xml,html,htm}", "koi.json"],
+        "zipfile": "else.zip",
+        "dest": "./temp/"
+    },
+    "cleantemp": {
+        "src": "./temp/"
+    },
+    "cleandist": {
+        "src": "./dist/"
     }
 }
